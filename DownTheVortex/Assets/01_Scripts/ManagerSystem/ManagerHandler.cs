@@ -14,11 +14,12 @@ namespace BaseSystems.Managers {
             SortedList<int, Manager> priorityList = new SortedList<int, Manager>();
             // All children gameobjects of the manager handler GO must
             // inherit from the manager base class
-            foreach (Transform child in transform)
+
+            Manager[] managers = GetComponentsInChildren<Manager>();
+            foreach(Manager manager in managers)
             {
-                Manager instance = child.GetComponent<Manager>();
-                priorityList.Add(instance.InitializationPriority, instance);
-                instance.RegisterAsManager();
+                priorityList.Add(manager.InitializationPriority, manager);
+                manager.RegisterAsManager();
             }
 
             foreach(KeyValuePair<int, Manager> manager in priorityList)
@@ -40,7 +41,7 @@ namespace BaseSystems.Managers {
             Manager manager = null;
             if (!Managers.TryGetValue(typeof(T), out manager))
             {
-                throw new Exception("No manager of type \"{0}\" is registered");
+                throw new Exception(string.Format("No manager of type \"{0}\" is registered", typeof(T).ToString()));
             }
             return manager as T;
         }
