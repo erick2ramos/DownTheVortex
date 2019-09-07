@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace Gameplay.Obstacles {
     public class ObstacleStep : MonoBehaviour
     {
+        public Transform Pivot;
         ObstacleController[] _obstacles;
         Animator _animator;
         bool _active = false;
@@ -22,6 +23,7 @@ namespace Gameplay.Obstacles {
 
         public void Activate()
         {
+            Pivot.localRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
             _active = true;
             gameObject.SetActive(true);
         }

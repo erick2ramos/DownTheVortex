@@ -22,6 +22,7 @@ namespace Gameplay {
         public int ScorePerStep = 1;
         public float StepSpawnTime = 1;
         public float OverallSpeed = 1;
+        public float VortexRadius = 8;
         public List<ObstacleStep> ObstaclesPatterns;
         public PlayerController PlayerPrefab;
         public Vector3 PlayerStartingPosition;
@@ -49,7 +50,8 @@ namespace Gameplay {
             _activeObstacles = new Queue<ObstacleStep>();
             FillPool();
             CurrentPlayer = Instantiate(GameConfig.PlayerPrefab, WorldHolder, false);
-            CurrentPlayer.Init(GameConfig.PlayerStartingPosition);
+            CurrentPlayer.Init(GameConfig.VortexRadius, 
+                GameConfig.PlayerStartingPosition.z);
             CurrentState = GameState.Ready;
         }
 

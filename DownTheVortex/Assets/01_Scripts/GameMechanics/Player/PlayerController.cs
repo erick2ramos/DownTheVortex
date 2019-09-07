@@ -14,14 +14,11 @@ namespace Gameplay
         float _radius = 8.5f;
         float _depth;
 
-        public void Init(Vector3 startingPos)
+        public void Init(float radius, float depth)
         {
-            Vector3 projectedPos = startingPos;
-            _depth = projectedPos.z;
-            projectedPos.z = 0;
-            _radius = projectedPos.magnitude;
+            _radius = radius;
             _currentAngle = transform.localRotation.eulerAngles.z;
-            Pivot.position = startingPos;
+            Model.position = new Vector3(0, -radius, depth);
         }
 
         public void Activate()
@@ -46,7 +43,14 @@ namespace Gameplay
         protected override void OnTouchStay(TouchInputEvent input)
         {
             _currentAngle += input.touchDelta.x;
-            transform.localRotation = Quaternion.Euler(0, 0, _currentAngle);
+            Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
+        }
+        public Vector3 AngularPosition(float radius, float angleRad)
+        {
+            Vector3 newPos = new Vector3(
+                Mathf.Cos(angleRad),
+                Mathf.Sin(angleRad)) * radius;
+            return newPos;
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Gameplay.Obstacles
             Vector3 newPos = new Vector3(
                 Mathf.Cos(angleRad),
                 Mathf.Sin(angleRad)) * radius;
-            newPos.z = _depth;
             return newPos;
         }
     }

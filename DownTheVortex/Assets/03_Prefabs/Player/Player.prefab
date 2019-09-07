@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AngularSpeed: 360
-  Model: {fileID: 3268283278168998514}
-  Pivot: {fileID: 5472892239974396636}
+  Model: {fileID: 5472892239974396636}
+  Pivot: {fileID: 3268283278168998514}
 --- !u!54 &8113743794469297981
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -88,7 +88,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8316135542505575666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.97, z: -7.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5472892239974396636}

@@ -215,11 +215,12 @@ MonoBehaviour:
     ScorePerStep: 1
     StepSpawnTime: 1
     OverallSpeed: 1
+    VortexRadius: 7.7
     ObstaclesPatterns:
     - {fileID: 3794957460408100858, guid: af02f95c427a8c047a7588a374e783e8, type: 3}
     PlayerPrefab: {fileID: 1047415325876207294, guid: 073eff5f375a2f04588a949d1dd66e0b,
       type: 3}
-    PlayerStartingPosition: {x: 0, y: -6.97, z: -7.7}
+    PlayerStartingPosition: {x: 0, y: 0, z: -10}
   ObstaclesHolder: {fileID: 215853305}
   WorldHolder: {fileID: 521225176}
   EnvironmentRenderer: {fileID: 2007858520}
@@ -247,7 +248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215853304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 60}
+  m_LocalPosition: {x: 0, y: 0, z: 80}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 521225176}
@@ -303,8 +304,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 80
+  far clip plane: 100
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
