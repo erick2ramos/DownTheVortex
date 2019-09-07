@@ -14,13 +14,10 @@ namespace BaseSystems.SceneHandling
     {
         public override IEnumerator Initialization()
         {
-            var DPManager = ManagerHandler.Get<DataPersistanceManager>();
+            Gameplay.GameManager.Instance.Init();
 
-            DataPersistanceManager.PlayerData.CurrentHighScore++;
-            yield return new WaitForSeconds(1);
-            DPManager.Save();
+            yield return null;
 
-            GameLog.Log(DataPersistanceManager.PlayerData.CurrentHighScore);
         }
     }
 }

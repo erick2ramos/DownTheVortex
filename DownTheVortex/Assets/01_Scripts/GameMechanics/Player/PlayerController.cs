@@ -6,7 +6,10 @@ using UnityEngine;
 namespace Gameplay
 {
     public class PlayerController : InputListener
-    { 
+    {
+        public float AngularSpeed = 1;
+        public Transform Model;
+        public Transform Pivot;
         float _currentAngle = -90;
         float _radius = 8.5f;
         float _depth;
@@ -17,22 +20,33 @@ namespace Gameplay
             _depth = projectedPos.z;
             projectedPos.z = 0;
             _radius = projectedPos.magnitude;
-            transform.position = startingPos;
+            _currentAngle = transform.localRotation.eulerAngles.z;
+            Pivot.position = startingPos;
+        }
+
+        public void Activate()
+        {
+            StartCoroutine(RotateModel());
+        }
+
+        private IEnumerator RotateModel()
+        {
+            while (true)
+            {
+                yield return null;
+                Model.localRotation *= Quaternion.Euler(AngularSpeed * Time.deltaTime, 0, 0);
+            }
+        }
+
+        public void Deactivate()
+        {
+            StopAllCoroutines();
         }
 
         protected override void OnTouchStay(TouchInputEvent input)
         {
             _currentAngle += input.touchDelta.x;
-            transform.position = AngularPosition(_radius, _currentAngle * Mathf.Deg2Rad);
-        }
-
-        public Vector3 AngularPosition(float radius, float angleRad)
-        {
-            Vector3 newPos = new Vector3(
-                Mathf.Cos(angleRad),
-                Mathf.Sin(angleRad)) * radius;
-            newPos.z = _depth;
-            return newPos;
+            transform.localRotation = Quaternion.Euler(0, 0, _currentAngle);
         }
     }
 }

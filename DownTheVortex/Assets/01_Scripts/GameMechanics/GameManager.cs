@@ -50,6 +50,7 @@ namespace Gameplay {
             FillPool();
             CurrentPlayer = Instantiate(GameConfig.PlayerPrefab, WorldHolder, false);
             CurrentPlayer.Init(GameConfig.PlayerStartingPosition);
+            CurrentState = GameState.Ready;
         }
 
         public void FillPool()
@@ -68,6 +69,15 @@ namespace Gameplay {
         {
             switch (CurrentState)
             {
+                case GameState.Ready:
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        CurrentPlayer.Activate();
+                        EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
+                        EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed);
+                        CurrentState = GameState.Playing;
+                    }
+                    break;
                 case GameState.Playing:
                     _timer += Time.deltaTime;
                     if (_timer > GameConfig.StepSpawnTime)
@@ -99,6 +109,11 @@ namespace Gameplay {
             {
                 //Set pause
             }
+        }
+
+        public void GameOver()
+        {
+            EnvironmentRenderer.material.SetFloat("_Speed", 0);
         }
 
         public void Quit()
