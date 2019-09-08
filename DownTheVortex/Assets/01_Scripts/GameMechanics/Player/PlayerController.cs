@@ -9,6 +9,10 @@ namespace Gameplay
     {
         public Transform Model;
         public Transform Pivot;
+        public LayerMask ObstaclesLayer;
+        public ParticleSystem PlayFeedback;
+        public ParticleSystem DeathFeedback;
+
         float _currentAngle = -90;
         float _radius = 8.5f;
         float _depth;
@@ -27,6 +31,8 @@ namespace Gameplay
         public void Activate()
         {
             StartCoroutine(RotateModel());
+            PlayFeedback.transform.position = Model.transform.position;
+            PlayFeedback.Play();
         }
 
         private IEnumerator RotateModel()
@@ -41,6 +47,18 @@ namespace Gameplay
         public void Deactivate()
         {
             StopAllCoroutines();
+            PlayFeedback.Pause();
+        }
+
+        public IEnumerator Kill()
+        {
+            Handheld.Vibrate();
+            Model.gameObject.SetActive(false);
+            PlayFeedback.gameObject.SetActive(false);
+            DeathFeedback.transform.position = Model.transform.position;
+            DeathFeedback.Play();
+            yield return null;
+            Deactivate();
         }
 
         protected override void OnTouchStay(TouchInputEvent input)
@@ -49,14 +67,18 @@ namespace Gameplay
                 return;
             _currentAngle += input.touchDelta.x;
             Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
+            PlayFeedback.transform.position = Model.transform.position;
         }
 
-        public Vector3 AngularPosition(float radius, float angleRad)
+        private void OnTriggerEnter(Collider other)
         {
-            Vector3 newPos = new Vector3(
-                Mathf.Cos(angleRad),
-                Mathf.Sin(angleRad)) * radius;
-            return newPos;
+            if((ObstaclesLayer.value & (1 << other.gameObject.layer)) > 0)
+            {
+                // Player collided with an obstacle start the gameover flow
+                Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
+                StartCoroutine(Kill());
+                GameManager.Instance.GameOver();
+            }
         }
     }
 }

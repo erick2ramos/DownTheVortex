@@ -20,6 +20,12 @@ namespace Gameplay.Obstacles {
             _speed = GameManager.Instance.GameConfig.OverallSpeed;
             _direction = new Vector3(0, 0, -1);
             GameManager.Instance.OnPause += ToggleActive;
+            GameManager.Instance.OnGameOver += OnGameOver;
+        }
+
+        public void OnGameOver()
+        {
+            _active = false;
         }
 
         public void ToggleActive(bool isPaused)
@@ -50,6 +56,7 @@ namespace Gameplay.Obstacles {
         {
             _active = false;
             _animator.SetTrigger("Deactivate");
+            GameManager.Instance.OnGameOver -= OnGameOver;
             GameManager.Instance.OnPause -= ToggleActive;
             Destroy(gameObject, 1);
         }

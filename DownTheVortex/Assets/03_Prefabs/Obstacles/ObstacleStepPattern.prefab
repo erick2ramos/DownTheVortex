@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1231438156644907339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 3794957460408100859}
   - component: {fileID: 3794957460408100858}
   - component: {fileID: 6339392268103192698}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ObstacleStepPattern
   m_TagString: Untagged
   m_Icon: {fileID: 0}

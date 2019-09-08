@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Gameplay.Obstacles;
 using Gameplay.UI;
+using BaseSystems.Managers;
+using BaseSystems.DataPersistance;
 
 namespace Gameplay {
     public enum GameState
@@ -143,8 +145,11 @@ namespace Gameplay {
 
         public void GameOver()
         {
+            DataPersistanceManager.PlayerData.CurrentHighScore = Mathf.Max(DataPersistanceManager.PlayerData.CurrentHighScore, CurrentScore);
+            CurrentState = GameState.Gameover;
             EnvironmentRenderer.material.SetFloat("_Speed", 0);
             OnGameOver?.Invoke();
+            UIManager.ShowScreen("GameOverMenu");
         }
 
         public void Quit()
