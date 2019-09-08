@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Gameplay.Obstacles;
+using Gameplay.UI;
 
 namespace Gameplay {
     public enum GameState
@@ -31,6 +32,7 @@ namespace Gameplay {
     public class GameManager : Singleton<GameManager>
     {
         public event System.Action OnGameOver;
+        public event System.Action<bool> OnPause;
         public event System.Action<int> OnScoreUpdated;
 
         public GameConfig GameConfig;
@@ -38,6 +40,7 @@ namespace Gameplay {
         public Transform ObstaclesHolder;
         public Transform WorldHolder;
         public MeshRenderer EnvironmentRenderer;
+        public GameUIManager UIManager;
         public GameState CurrentState { get; private set; }
         public PlayerController CurrentPlayer { get; private set; }
 
@@ -55,7 +58,11 @@ namespace Gameplay {
             CurrentPlayer = Instantiate(GameConfig.PlayerPrefab, WorldHolder, false);
             CurrentPlayer.Init(GameConfig.VortexRadius, 
                 GameConfig.PlayerStartingPosition.z);
-            CurrentState = GameState.Ready;
+            UIManager.Init();
+            UIManager.ShowScreen("MainMenu", () => 
+            {
+                CurrentState = GameState.Ready;
+            });
         }
 
         public void FillPool()
@@ -77,10 +84,13 @@ namespace Gameplay {
                 case GameState.Ready:
                     if (Input.GetMouseButtonDown(0))
                     {
-                        CurrentPlayer.Activate();
-                        EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
-                        EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
-                        CurrentState = GameState.Playing;
+                        UIManager.ShowScreen("GameHud", () =>
+                        {
+                            CurrentPlayer.Activate();
+                            EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
+                            EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
+                            CurrentState = GameState.Playing;
+                        });
                     }
                     break;
                 case GameState.Playing:
@@ -113,11 +123,21 @@ namespace Gameplay {
             if(CurrentState == GameState.Paused)
             {
                 // Set playing
-                CurrentState = GameState.Playing;
+                UIManager.ShowScreen("GameHud", () =>
+                {
+                    EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
+                    CurrentPlayer.Activate();
+                    CurrentState = GameState.Playing;
+                    OnPause?.Invoke(false);
+                });
             } else if (CurrentState == GameState.Playing)
             {
                 //Set pause
                 CurrentState = GameState.Paused;
+                EnvironmentRenderer.material.SetFloat("_Speed", 0);
+                CurrentPlayer.Deactivate();
+                OnPause?.Invoke(true);
+                UIManager.ShowScreen("PauseMenu");
             }
         }
 

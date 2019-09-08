@@ -15,6 +15,7 @@ namespace BaseSystems.SceneHandling
 
         public event Action OnLoadingStart;
         public event Action<float> OnLoadingUpdate;
+
         public event Action OnLoadingFinished;
 
         public bool IsLoading { get; private set; }
@@ -32,6 +33,10 @@ namespace BaseSystems.SceneHandling
         public void AddScene(SceneIndex scene, SceneModel model)
         {
             StartCoroutine(LoadAdditiveScene(scene, model));
+        }
+        public void ReloadScene()
+        {
+            StartCoroutine(LoadMainScene(_activeScene.SceneIdentifier, _activeScene.Model));
         }
 
         private IEnumerator LoadMainScene(SceneIndex scene, SceneModel model)

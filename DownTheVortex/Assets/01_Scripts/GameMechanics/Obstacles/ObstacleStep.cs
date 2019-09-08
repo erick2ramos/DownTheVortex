@@ -19,6 +19,12 @@ namespace Gameplay.Obstacles {
             _animator = GetComponent<Animator>();
             _speed = GameManager.Instance.GameConfig.OverallSpeed;
             _direction = new Vector3(0, 0, -1);
+            GameManager.Instance.OnPause += ToggleActive;
+        }
+
+        public void ToggleActive(bool isPaused)
+        {
+            _active = !isPaused;
         }
 
         public void Activate()
@@ -44,6 +50,7 @@ namespace Gameplay.Obstacles {
         {
             _active = false;
             _animator.SetTrigger("Deactivate");
+            GameManager.Instance.OnPause -= ToggleActive;
             Destroy(gameObject, 1);
         }
     }
