@@ -1,0 +1,40 @@
+﻿using UnityEngine;
+using System.Collections;
+using BaseSystems.Audio;
+using BaseSystems.Managers;
+
+namespace Gameplay
+{
+    public class CollectableStep : Obstacles.ObstacleStep
+    {
+        [SerializeField]
+        ParticleSystem _collectFeedback;
+        [SerializeField]
+        AudioID _sfxOnCollect;
+        [SerializeField]
+        Transform _model;
+        [SerializeField]
+        float _rotationDegree;
+
+        public void OnCollect()
+        {
+            AudioManager audioManager = ManagerHandler.Get<AudioManager>();
+            _model.gameObject.SetActive(false);
+            _collectFeedback.Play();
+        }
+
+        protected override void FixedUpdate()
+        {
+            _model.transform.rotation *= Quaternion.Euler(0, _rotationDegree * Time.deltaTime, 0);
+
+            if (!_active)
+                return;
+
+            transform.Translate(_direction * _speed);
+            if (transform.position.z < -10)
+            {
+                Deactivate();
+            }
+        }
+    }
+}
