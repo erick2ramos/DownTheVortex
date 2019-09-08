@@ -30,6 +30,9 @@ namespace Gameplay {
 
     public class GameManager : Singleton<GameManager>
     {
+        public event System.Action OnGameOver;
+        public event System.Action<int> OnScoreUpdated;
+
         public GameConfig GameConfig;
         public int CurrentScore { get; set; }
         public Transform ObstaclesHolder;
@@ -76,7 +79,7 @@ namespace Gameplay {
                     {
                         CurrentPlayer.Activate();
                         EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
-                        EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed);
+                        EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
                         CurrentState = GameState.Playing;
                     }
                     break;
@@ -100,6 +103,9 @@ namespace Gameplay {
         public void AddScore()
         {
             CurrentScore += GameConfig.ScorePerStep;
+            // Show score feedback
+            // Update ui
+            OnScoreUpdated?.Invoke(CurrentScore);
         }
 
         public void Pause()
@@ -107,20 +113,27 @@ namespace Gameplay {
             if(CurrentState == GameState.Paused)
             {
                 // Set playing
+                CurrentState = GameState.Playing;
             } else if (CurrentState == GameState.Playing)
             {
                 //Set pause
+                CurrentState = GameState.Paused;
             }
         }
 
         public void GameOver()
         {
             EnvironmentRenderer.material.SetFloat("_Speed", 0);
+            OnGameOver?.Invoke();
         }
 
         public void Quit()
         {
-
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_ANDROID
+            Application.Quit();
+#endif
         }
     }
 }
