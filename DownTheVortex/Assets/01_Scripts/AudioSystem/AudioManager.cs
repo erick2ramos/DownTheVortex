@@ -3,6 +3,7 @@ using System.Collections;
 using BaseSystems.Managers;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 namespace BaseSystems.Audio
 {
@@ -32,6 +33,16 @@ namespace BaseSystems.Audio
         public AudioSource SFXSource;
         [SerializeField]
         List<AudioTuple> _soundMap;
+
+        public override void Initialize()
+        {
+            MuteSFX(DataPersistance.DataPersistanceManager.PlayerData.SoundPreferences.IsMuted);
+        }
+
+        public void MuteSFX(bool mute)
+        {
+            SFXSource.mute = mute;
+        }
 
         public void PlayBackgroundMusic(AudioID audioId)
         {

@@ -83,18 +83,6 @@ namespace Gameplay {
         {
             switch (CurrentState)
             {
-                case GameState.Ready:
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        UIManager.ShowScreen("GameHud", () =>
-                        {
-                            CurrentPlayer.Activate();
-                            EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
-                            EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
-                            CurrentState = GameState.Playing;
-                        });
-                    }
-                    break;
                 case GameState.Playing:
                     _timer += Time.deltaTime;
                     if (_timer > GameConfig.StepSpawnTime)
@@ -112,35 +100,20 @@ namespace Gameplay {
             }
         }
 
+        public void Play()
+        {
+            CurrentPlayer.Activate();
+            EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
+            EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
+            CurrentState = GameState.Playing;
+        }
+
         public void AddScore()
         {
             CurrentScore += GameConfig.ScorePerStep;
             // Show score feedback
             // Update ui
             OnScoreUpdated?.Invoke(CurrentScore);
-        }
-
-        public void Pause()
-        {
-            if(CurrentState == GameState.Paused)
-            {
-                // Set playing
-                UIManager.ShowScreen("GameHud", () =>
-                {
-                    EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
-                    CurrentPlayer.Activate();
-                    CurrentState = GameState.Playing;
-                    OnPause?.Invoke(false);
-                });
-            } else if (CurrentState == GameState.Playing)
-            {
-                //Set pause
-                CurrentState = GameState.Paused;
-                EnvironmentRenderer.material.SetFloat("_Speed", 0);
-                CurrentPlayer.Deactivate();
-                OnPause?.Invoke(true);
-                UIManager.ShowScreen("PauseMenu");
-            }
         }
 
         public void GameOver()

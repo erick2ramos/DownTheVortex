@@ -25,6 +25,7 @@ namespace BaseSystems.DataPersistance
             FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
 
             _formatter.Serialize(fs, PlayerData);
+            GameLog.LogWarning(JsonUtility.ToJson(PlayerData));
             fs.Close();
         }
 
