@@ -36,7 +36,7 @@ namespace Gameplay
             if (!_active)
                 return;
 
-            transform.Translate(_direction * _speed);
+            transform.Translate(_direction * _speed * Time.deltaTime);
             if (transform.position.z < -10)
             {
                 Deactivate();
