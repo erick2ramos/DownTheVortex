@@ -49,7 +49,6 @@ namespace Gameplay {
         public GameState CurrentState { get; private set; }
         public PlayerController CurrentPlayer { get; private set; }
         public int CurrentCollectable { get; private set; }
-
         SpawnFactory _factory;
 
         float _timer;
@@ -105,7 +104,7 @@ namespace Gameplay {
             {
                 CurrentPlayer.Activate();
                 EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
-                EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
+                EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.2f * Time.deltaTime);
                 CurrentState = GameState.Playing;
             }
         }
