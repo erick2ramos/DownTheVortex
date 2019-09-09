@@ -51,6 +51,9 @@ MonoBehaviour:
   ObstaclesLayer:
     serializedVersion: 2
     m_Bits: 256
+  CollectableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   PlayFeedback: {fileID: 3070622822112688756}
   DeathFeedback: {fileID: 7299630371906929983}
 --- !u!54 &8113743794469297981

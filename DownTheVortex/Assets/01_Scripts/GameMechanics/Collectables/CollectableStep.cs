@@ -16,6 +16,12 @@ namespace Gameplay
         [SerializeField]
         float _rotationDegree;
 
+        public override void Init()
+        {
+            base.Init();
+            _collectFeedback.Stop();
+        }
+
         public void OnCollect()
         {
             AudioManager audioManager = ManagerHandler.Get<AudioManager>();
@@ -25,7 +31,7 @@ namespace Gameplay
 
         protected override void FixedUpdate()
         {
-            _model.transform.rotation *= Quaternion.Euler(0, _rotationDegree * Time.deltaTime, 0);
+            _model.transform.rotation *= Quaternion.Euler(0, 0, _rotationDegree * Time.deltaTime);
 
             if (!_active)
                 return;

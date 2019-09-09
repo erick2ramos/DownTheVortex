@@ -299,6 +299,7 @@ MonoBehaviour:
     ObstaclesPatterns:
     - {fileID: 7476780678170309405, guid: 33eac1a412c44c2499947261303ec120, type: 3}
     - {fileID: 7476780678170309405, guid: 2b964e1e83045af4cb99bcd95a559ba5, type: 3}
+    CollectablesPatterns:
     - {fileID: 3794957460408100858, guid: d6635b3f77259d344b4e7b37cde93225, type: 3}
     PlayerPrefab: {fileID: 1047415325876207294, guid: 073eff5f375a2f04588a949d1dd66e0b,
       type: 3}

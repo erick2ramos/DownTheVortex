@@ -23,10 +23,12 @@ namespace Gameplay {
         public int MinPoolSize = 10;
         public int MaxPoolSize = 20;
         public int ScorePerStep = 1;
+        public int CollectableValue = 1;
         public float StepSpawnTime = 1;
         public float OverallSpeed = 1;
         public float VortexRadius = 8;
         public List<ObstacleStep> ObstaclesPatterns;
+        public List<ObstacleStep> CollectablesPatterns;
         public PlayerController PlayerPrefab;
         public Vector3 PlayerStartingPosition;
     }
@@ -36,6 +38,7 @@ namespace Gameplay {
         public event System.Action OnGameOver;
         public event System.Action<bool> OnPause;
         public event System.Action<int> OnScoreUpdated;
+        public event System.Action<int> OnCollectableUpdated;
 
         public GameConfig GameConfig;
         public int CurrentScore { get; set; }
@@ -45,38 +48,28 @@ namespace Gameplay {
         public GameUIManager UIManager;
         public GameState CurrentState { get; private set; }
         public PlayerController CurrentPlayer { get; private set; }
+        public int CurrentCollectable { get; private set; }
 
-        Queue<ObstacleStep> _obstaclesPool;
-        Queue<ObstacleStep> _activeObstacles;
+        SpawnFactory _factory;
+
         float _timer;
+        private float _collectableTimer;
 
         public void Init()
         {
             CurrentScore = 0;
             _timer = 0;
-            _obstaclesPool = new Queue<ObstacleStep>();
-            _activeObstacles = new Queue<ObstacleStep>();
-            FillPool();
+            _factory = new SpawnFactory(GameConfig, ObstaclesHolder);
+
             CurrentPlayer = Instantiate(GameConfig.PlayerPrefab, WorldHolder, false);
             CurrentPlayer.Init(GameConfig.VortexRadius, 
                 GameConfig.PlayerStartingPosition.z);
+
             UIManager.Init();
             UIManager.ShowScreen("MainMenu", () => 
             {
                 CurrentState = GameState.Ready;
             });
-        }
-
-        public void FillPool()
-        {
-            while (_obstaclesPool.Count < GameConfig.MaxPoolSize)
-            {
-                int patternIndex = Random.Range(0, GameConfig.ObstaclesPatterns.Count);
-                ObstacleStep step = Instantiate(GameConfig.ObstaclesPatterns[patternIndex], ObstaclesHolder, false);
-                step.gameObject.SetActive(false);
-                step.Init();
-                _obstaclesPool.Enqueue(step);
-            }
         }
 
         public void Update()
@@ -85,15 +78,21 @@ namespace Gameplay {
             {
                 case GameState.Playing:
                     _timer += Time.deltaTime;
+                    _collectableTimer += Time.deltaTime;
+                    float collectableSpawnTime = GameConfig.StepSpawnTime * 0.5f;
+
+                    if (_collectableTimer > collectableSpawnTime && _timer < GameConfig.StepSpawnTime)
+                    {
+                        _collectableTimer = 0;
+                        if (Random.value > 0.8f)
+                        {
+                            _factory.NextCollectable();
+                        }
+                    }
+
                     if (_timer > GameConfig.StepSpawnTime)
                     {
-                        ObstacleStep obstacle = _obstaclesPool.Dequeue();
-                        obstacle.Activate();
-                        _activeObstacles.Enqueue(obstacle);
-                        if (_obstaclesPool.Count < GameConfig.MinPoolSize)
-                        {
-                            FillPool();
-                        }
+                        _factory.Next();
                         _timer = 0;
                     }
                     break;
@@ -102,10 +101,13 @@ namespace Gameplay {
 
         public void Play()
         {
-            CurrentPlayer.Activate();
-            EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
-            EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
-            CurrentState = GameState.Playing;
+            if(CurrentState == GameState.Ready)
+            {
+                CurrentPlayer.Activate();
+                EnvironmentRenderer.material.SetVector("_Velocity", new Vector4(0, -1));
+                EnvironmentRenderer.material.SetFloat("_Speed", GameConfig.OverallSpeed * 0.5f);
+                CurrentState = GameState.Playing;
+            }
         }
 
         public void AddScore()
@@ -114,6 +116,13 @@ namespace Gameplay {
             // Show score feedback
             // Update ui
             OnScoreUpdated?.Invoke(CurrentScore);
+        }
+
+        public void AddCollectable()
+        {
+            DataPersistanceManager.PlayerData.CurrentCurrency += GameConfig.CollectableValue;
+            CurrentCollectable = DataPersistanceManager.PlayerData.CurrentCurrency;
+            OnCollectableUpdated?.Invoke(CurrentCollectable);
         }
 
         public void GameOver()

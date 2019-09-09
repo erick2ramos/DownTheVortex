@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pivot: {fileID: 1231438156644907339}
-  _collectFeedback: {fileID: 0}
+  _collectFeedback: {fileID: 8112244402301953707}
   _sfxOnCollect: 6
   _model: {fileID: 8932080837166792037}
   _rotationDegree: 180
@@ -192,6 +192,16 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8019743409858802140, guid: de9d7c949c5391c43ab58335e81193ae,
+        type: 3}
+      propertyPath: ShapeModule.type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8019743409858802140, guid: de9d7c949c5391c43ab58335e81193ae,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3977470910609354804, guid: de9d7c949c5391c43ab58335e81193ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -252,6 +262,12 @@ PrefabInstance:
 --- !u!4 &2949138476133771075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3977470910609354804, guid: de9d7c949c5391c43ab58335e81193ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 2296731810080626551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8112244402301953707 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8019743409858802140, guid: de9d7c949c5391c43ab58335e81193ae,
     type: 3}
   m_PrefabInstance: {fileID: 2296731810080626551}
   m_PrefabAsset: {fileID: 0}

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 namespace Gameplay.Obstacles {
     public class ObstacleStep : MonoBehaviour
     {
+        public event System.Action<ObstacleStep> OnDestroyEvent;
+
         public Transform Pivot;
         protected Animator _animator;
         protected bool _active = false;
@@ -56,7 +58,7 @@ namespace Gameplay.Obstacles {
             _animator.SetTrigger("Deactivate");
             GameManager.Instance.OnGameOver -= OnGameOver;
             GameManager.Instance.OnPause -= ToggleActive;
-            Destroy(gameObject, 1);
+            OnDestroyEvent?.Invoke(this);
         }
     }
 }

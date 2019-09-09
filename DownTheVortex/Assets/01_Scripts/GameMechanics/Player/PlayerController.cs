@@ -10,6 +10,7 @@ namespace Gameplay
         public Transform Model;
         public Transform Pivot;
         public LayerMask ObstaclesLayer;
+        public LayerMask CollectableLayer;
         public ParticleSystem PlayFeedback;
         public ParticleSystem DeathFeedback;
 
@@ -70,6 +71,11 @@ namespace Gameplay
             PlayFeedback.transform.position = Model.transform.position;
         }
 
+        private void OnScoreUpdate(int newScore)
+        {
+            // Show score feedback
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if((ObstaclesLayer.value & (1 << other.gameObject.layer)) > 0)
@@ -78,6 +84,12 @@ namespace Gameplay
                 Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
                 StartCoroutine(Kill());
                 GameManager.Instance.GameOver();
+            } else if((CollectableLayer.value & (1 << other.gameObject.layer)) > 0)
+            {
+                // Player collected
+                var collectable = other.GetComponentInParent<CollectableStep>();
+                collectable.OnCollect();
+                GameManager.Instance.AddCollectable();
             }
         }
     }

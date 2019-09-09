@@ -8,6 +8,7 @@ namespace BaseSystems.DataPersistance
     public class PlayerData
     {
         public int CurrentHighScore;
+        public int CurrentCurrency;
         public SoundPreferences SoundPreferences;
 
         public PlayerData()
