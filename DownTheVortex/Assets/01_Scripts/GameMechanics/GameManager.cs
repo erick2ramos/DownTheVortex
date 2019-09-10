@@ -49,6 +49,8 @@ namespace Gameplay {
         public GameState CurrentState { get; private set; }
         public PlayerController CurrentPlayer { get; private set; }
         public int CurrentCollectable { get; private set; }
+        public int PreviousHighScore { get; private set; }
+
         SpawnFactory _factory;
 
         float _timer;
@@ -126,6 +128,7 @@ namespace Gameplay {
 
         public void GameOver()
         {
+            PreviousHighScore = DataPersistanceManager.PlayerData.CurrentHighScore;
             DataPersistanceManager.PlayerData.CurrentHighScore = Mathf.Max(DataPersistanceManager.PlayerData.CurrentHighScore, CurrentScore);
             CurrentState = GameState.Gameover;
             EnvironmentRenderer.material.SetFloat("_Speed", 0);

@@ -10,7 +10,10 @@ namespace Gameplay.UI
     public class GameOverScreen : GameUIScreen
     {
         [SerializeField]
-        Text _scoreText;
+        Text _scoreText, _bestValueText, _currencyAmountText;
+
+        [SerializeField]
+        GameObject _newBestIcon;
 
         public override void Init()
         {
@@ -20,6 +23,9 @@ namespace Gameplay.UI
         public override IEnumerator Activate()
         {
             _scoreText.text = GameManager.Instance.CurrentScore.ToString();
+            _newBestIcon.SetActive(GameManager.Instance.CurrentScore > GameManager.Instance.PreviousHighScore);
+            _currencyAmountText.text = DataPersistanceManager.PlayerData.CurrentCurrency.ToString();
+            _bestValueText.text = DataPersistanceManager.PlayerData.CurrentHighScore.ToString();
             return base.Activate();
         }
 
