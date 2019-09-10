@@ -62,7 +62,8 @@ namespace Gameplay.Obstacles {
 
             foreach (var behaviour in _behaviours)
             {
-                behaviour.HandleStep();
+                if(behaviour.IsActive)
+                    behaviour.HandleStep();
             }
 
             if(transform.position.z < -10)

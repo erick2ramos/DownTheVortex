@@ -41,6 +41,9 @@ GameObject:
   - component: {fileID: 3794957460408100859}
   - component: {fileID: 3794957460408100858}
   - component: {fileID: 6339392268103192698}
+  - component: {fileID: 5107891122569515883}
+  - component: {fileID: 4306547372305093503}
+  - component: {fileID: 6552731913957197993}
   m_Layer: 8
   m_Name: ObstacleStepPattern
   m_TagString: Untagged
@@ -96,6 +99,46 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5107891122569515883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b04502ebc0652743bff4c1cbdf13ce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationAnglePerSecond: 45
+  AxisSign: 0
+--- !u!114 &4306547372305093503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ca14e3760472a47b66341fc2f1db8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetAngle: {x: 0, y: 0, z: 0, w: 0}
+  RotationAnglePerSecond: 150
+--- !u!114 &6552731913957197993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d189edf70a40e95409b7fdc047f467d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5517752701198848660
 GameObject:
   m_ObjectHideFlags: 0
