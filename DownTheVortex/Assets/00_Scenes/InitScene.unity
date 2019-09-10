@@ -362,7 +362,19 @@ MonoBehaviour:
   InitializationPriority: 600
   MusicSource: {fileID: 792860406}
   SFXSource: {fileID: 792860405}
-  _soundMap: []
+  _soundMap:
+  - Id: 1
+    Sound: {fileID: 8300000, guid: f79f726c1ea3db445ac429a9df5a2742, type: 3}
+  - Id: 2
+    Sound: {fileID: 8300000, guid: c1d80fac428a7d34ea10a2456589b2ee, type: 3}
+  - Id: 3
+    Sound: {fileID: 8300000, guid: a33fe64d713c6444ba97f2aed9fda43b, type: 3}
+  - Id: 4
+    Sound: {fileID: 8300000, guid: 2f96939ca342a1b4d9b150a0cdb30729, type: 3}
+  - Id: 5
+    Sound: {fileID: 8300000, guid: 4ed75aa1e6981d34c8b709b38524fbd1, type: 3}
+  - Id: 6
+    Sound: {fileID: 8300000, guid: e4375c7317834e347b8250f67d463c22, type: 3}
 --- !u!1 &1339850619
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
-﻿using BaseSystems.Input;
+﻿using BaseSystems.Audio;
+using BaseSystems.Input;
+using BaseSystems.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -79,6 +81,7 @@ namespace Gameplay
         public IEnumerator Kill()
         {
             Handheld.Vibrate();
+            ManagerHandler.Get<AudioManager>().PlaySFX(AudioID.Death0);
             Model.gameObject.SetActive(false);
             PlayFeedback.gameObject.SetActive(false);
             DeathFeedback.transform.position = Model.transform.position;
@@ -118,9 +121,12 @@ namespace Gameplay
                 // Player collected
                 CollectableStep collectable = other.GetComponentInParent<CollectableStep>();
                 collectable.OnCollect();
+                ManagerHandler.Get<AudioManager>().PlaySFX(AudioID.Clear0);
+                Handheld.Vibrate();
                 GameManager.Instance.AddCollectable();
             } else if ((ScoreLayer.value & (1 << other.gameObject.layer)) > 0)
             {
+                Handheld.Vibrate();
                 GameManager.Instance.AddScore();
             }
         }
