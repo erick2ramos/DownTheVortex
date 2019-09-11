@@ -23,7 +23,7 @@ namespace BaseSystems.Input
         {
             _inputManager.OnTouchStart -= OnTouchStart;
             _inputManager.OnTouchStay -= OnTouchStay;
-            _inputManager.OnTouchRelease += OnTouchRelease;
+            _inputManager.OnTouchRelease -= OnTouchRelease;
         }
 
         protected virtual void OnTouchStart(TouchInputEvent input)
