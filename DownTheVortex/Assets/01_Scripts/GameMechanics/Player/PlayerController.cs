@@ -1,4 +1,5 @@
 ﻿using BaseSystems.Audio;
+using BaseSystems.Feedback;
 using BaseSystems.Input;
 using BaseSystems.Managers;
 using System.Collections;
@@ -16,8 +17,9 @@ namespace Gameplay
         public LayerMask CollectableLayer;
         public LayerMask ScoreLayer;
         public ParticleSystem PlayFeedback;
-        public ParticleSystem DeathFeedback;
+        public Feedbacks DeathFeedback;
         public TextMeshPro NotificationLabel;
+        public float MovementModifier = 0.38f;
 
         Vector3 OverallVelocity;
         float _currentAngle = -90;
@@ -85,7 +87,7 @@ namespace Gameplay
             Model.gameObject.SetActive(false);
             PlayFeedback.gameObject.SetActive(false);
             DeathFeedback.transform.position = Model.transform.position;
-            DeathFeedback.Play();
+            DeathFeedback.PlayAll();
             yield return null;
             Deactivate();
         }
@@ -95,7 +97,7 @@ namespace Gameplay
             if (GameManager.Instance.CurrentState != GameState.Playing)
                 return;
 
-            _currentAngle += input.touchDelta.x * GameManager.Instance.MovementMultiplier;
+            _currentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier * GameManager.Instance.MovementMultiplier;
             Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
             PlayFeedback.transform.position = Model.transform.position;
         }
@@ -122,7 +124,6 @@ namespace Gameplay
                 // Player collected
                 CollectableStep collectable = other.GetComponentInParent<CollectableStep>();
                 collectable.OnCollect();
-                ManagerHandler.Get<AudioManager>().PlaySFX(AudioID.Clear0);
                 Handheld.Vibrate();
                 GameManager.Instance.AddCollectable();
             } else if ((ScoreLayer.value & (1 << other.gameObject.layer)) > 0)

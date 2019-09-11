@@ -2,15 +2,14 @@
 using System.Collections;
 using BaseSystems.Audio;
 using BaseSystems.Managers;
+using BaseSystems.Feedback;
 
 namespace Gameplay
 {
     public class CollectableStep : Obstacles.ObstacleStep
     {
         [SerializeField]
-        ParticleSystem _collectFeedback;
-        [SerializeField]
-        AudioID _sfxOnCollect;
+        Feedbacks _collectFeedback;
         [SerializeField]
         Transform _model;
         [SerializeField]
@@ -19,14 +18,13 @@ namespace Gameplay
         public override void Init()
         {
             base.Init();
-            _collectFeedback.Stop();
+            _collectFeedback.Initialize(gameObject);
         }
 
         public void OnCollect()
         {
-            AudioManager audioManager = ManagerHandler.Get<AudioManager>();
             _model.gameObject.SetActive(false);
-            _collectFeedback.Play();
+            _collectFeedback.PlayAll();
         }
 
         protected override void FixedUpdate()

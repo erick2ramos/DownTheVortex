@@ -43,6 +43,9 @@ GameObject:
   - component: {fileID: 3794957460408100859}
   - component: {fileID: 3794957460408100858}
   - component: {fileID: 6339392268103192698}
+  - component: {fileID: 4082810815166620394}
+  - component: {fileID: 4726358016268385647}
+  - component: {fileID: 6940221575034361426}
   m_Layer: 10
   m_Name: CollectableStepPattern
   m_TagString: Untagged
@@ -78,8 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pivot: {fileID: 1231438156644907339}
-  _collectFeedback: {fileID: 8112244402301953707}
-  _sfxOnCollect: 6
+  _collectFeedback: {fileID: 4082810815166620394}
   _model: {fileID: 8932080837166792037}
   _rotationDegree: 180
 --- !u!95 &6339392268103192698
@@ -101,6 +103,52 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4082810815166620394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26994f93c2ecc464ebf3ab46c086c1cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoInitialize: 0
+  RegisteredFeedbacks:
+  - {fileID: 4726358016268385647}
+  - {fileID: 6940221575034361426}
+--- !u!114 &4726358016268385647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9562f1c857b4064592e64d748c73545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsActive: 1
+  StartingTimeOffset: 0
+  BoundedParticleSystem: {fileID: 8112244402301953707}
+--- !u!114 &6940221575034361426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794957460408100856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e427637a9144941ae65038ae20f82c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsActive: 1
+  StartingTimeOffset: 0
+  SFXID: 6
 --- !u!135 &566023044163918271
 SphereCollider:
   m_ObjectHideFlags: 0
