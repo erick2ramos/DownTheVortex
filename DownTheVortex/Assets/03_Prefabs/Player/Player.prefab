@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6957591975624360379}
   - component: {fileID: 1950791280973006529}
   - component: {fileID: 569546470860605729}
+  - component: {fileID: 1870262340226675779}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -126,6 +127,21 @@ MonoBehaviour:
   IsActive: 1
   StartingTimeOffset: 0
   SFXID: 3
+--- !u!114 &1870262340226675779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047415325876207292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee5bf3b8dd0f974fba033a5ab4287f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsPermitted: 1
+  JumpForce: 1
+  Gravity: 6
 --- !u!1 &1456786156111300937
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +451,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9054706566845726927}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.0000005

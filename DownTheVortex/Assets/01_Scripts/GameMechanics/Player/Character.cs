@@ -2,6 +2,7 @@
 using BaseSystems.Feedback;
 using BaseSystems.Input;
 using BaseSystems.Managers;
+using Gameplay.Ability;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,8 +10,16 @@ using UnityEngine;
 
 namespace Gameplay
 {
+    public enum CharacterState
+    {
+        Normal,
+        UsingAbility,
+        Death
+    }
+
     public class Character : InputListener
     {
+        public CharacterState CurrentState { get; set; }
         public Transform Model;
         public Transform Pivot;
         public LayerMask ObstaclesLayer;
@@ -20,6 +29,13 @@ namespace Gameplay
         public Feedbacks DeathFeedback;
         public TextMeshPro NotificationLabel;
         public float MovementModifier = 0.38f;
+
+        #region Abilities
+        CharacterAbility[] _characterAbilities;
+        CharacterAbility _activeAbility;
+        bool _validTap;
+        float _tapTime, _tapMaxTime = 0.15f;
+        #endregion
 
         Vector3 OverallVelocity;
         float _currentAngle = -90;
@@ -39,6 +55,14 @@ namespace Gameplay
             OverallVelocity = new Vector3(0, 0, -1) * _speed;
             GameManager.Instance.OnScoreUpdated -= OnScoreUpdate;
             GameManager.Instance.OnScoreUpdated += OnScoreUpdate;
+            _characterAbilities = GetComponents<CharacterAbility>();
+            foreach(var ability in _characterAbilities)
+            {
+                ability.enabled = false;
+                ability.Initialize(this);
+            }
+            _activeAbility = _characterAbilities[0];
+            _activeAbility.IsPermitted = true;
         }
 
         public void Activate()
@@ -56,6 +80,18 @@ namespace Gameplay
             {
                 yield return null;
                 Model.localRotation *= Quaternion.Euler(_angularSpeed * Time.deltaTime, 0, 0);
+            }
+        }
+
+        private void Update()
+        {
+            if(_characterAbilities != null)
+            {
+                foreach(CharacterAbility ability in _characterAbilities)
+                {
+                    if(ability.enabled && ability.IsPermitted)
+                       ability.ProcessAbility();
+                }
             }
         }
 
@@ -92,6 +128,13 @@ namespace Gameplay
             Deactivate();
         }
 
+        protected override void OnTouchStart(TouchInputEvent input)
+        {
+            if (GameManager.Instance.CurrentState != GameState.Playing)
+                return;
+            _tapTime = Time.time;
+        }
+
         protected override void OnTouchStay(TouchInputEvent input)
         {
             if (GameManager.Instance.CurrentState != GameState.Playing)
@@ -100,6 +143,18 @@ namespace Gameplay
             _currentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier * GameManager.Instance.MovementMultiplier;
             Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
             PlayFeedback.transform.position = Model.transform.position;
+        }
+
+        protected override void OnTouchRelease(TouchInputEvent input)
+        {
+            if (GameManager.Instance.CurrentState != GameState.Playing)
+                return;
+
+            _activeAbility.enabled = (Time.time - _tapTime < _tapMaxTime);
+            if (_activeAbility.enabled)
+            {
+                GameLog.LogWarning("Taped");
+            }
         }
 
         private void OnScoreUpdate(int newScore)
