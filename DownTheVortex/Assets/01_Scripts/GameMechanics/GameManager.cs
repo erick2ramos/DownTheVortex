@@ -31,6 +31,7 @@ namespace Gameplay {
         public List<ObstacleStep> CollectablesPatterns;
         public PlayerController PlayerPrefab;
         public Vector3 PlayerStartingPosition;
+        public List<Color> ValidColors;
     }
 
     public class GameManager : Singleton<GameManager>
@@ -42,6 +43,7 @@ namespace Gameplay {
 
         public GameConfig GameConfig;
         public int CurrentScore { get; set; }
+        public float MovementMultiplier = 1;
         public Transform ObstaclesHolder;
         public Transform WorldHolder;
         public MeshRenderer EnvironmentRenderer;

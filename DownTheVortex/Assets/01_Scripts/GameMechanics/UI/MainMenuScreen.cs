@@ -10,6 +10,7 @@ namespace Gameplay.UI
         [SerializeField]
         Button _settingsButton;
         bool _alreadyStarted;
+        private bool _blocked;
 
         public override void Init()
         {
@@ -20,7 +21,9 @@ namespace Gameplay.UI
         public override IEnumerator Activate()
         {
             _alreadyStarted = false;
-            return base.Activate();
+            _blocked = true;
+            yield return base.Activate();
+            _blocked = false;
         }
 
         public override IEnumerator Deactivate()
@@ -30,7 +33,7 @@ namespace Gameplay.UI
 
         public void Play()
         {
-            if (_alreadyStarted)
+            if (_alreadyStarted || _blocked)
                 return;
             _alreadyStarted = true;
             GameManager.Instance.UIManager.ShowScreen("GameHud", GameManager.Instance.Play);

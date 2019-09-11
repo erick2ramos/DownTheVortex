@@ -94,7 +94,8 @@ namespace Gameplay
         {
             if (GameManager.Instance.CurrentState != GameState.Playing)
                 return;
-            _currentAngle += input.touchDelta.x;
+
+            _currentAngle += input.touchDelta.x * GameManager.Instance.MovementMultiplier;
             Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
             PlayFeedback.transform.position = Model.transform.position;
         }

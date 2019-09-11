@@ -13,10 +13,12 @@ namespace Gameplay.Obstacles {
         protected float _speed = 0;
         protected Vector3 _direction;
         protected ObstacleBehaviour[] _behaviours;
+        protected MeshRenderer[] _obstacleRenderers;
 
         protected virtual void Awake()
         {
             _behaviours = GetComponents<ObstacleBehaviour>();
+            _obstacleRenderers = GetComponentsInChildren<MeshRenderer>();
         }
 
         public virtual void Init()
@@ -79,6 +81,14 @@ namespace Gameplay.Obstacles {
             GameManager.Instance.OnGameOver -= OnGameOver;
             GameManager.Instance.OnPause -= ToggleActive;
             OnDestroyEvent?.Invoke(this);
+        }
+
+        public virtual void SetColor(Color newColor)
+        {
+            foreach (MeshRenderer renderer in _obstacleRenderers)
+            {
+                renderer.material.SetColor("_BaseColor", newColor);
+            }
         }
     }
 }

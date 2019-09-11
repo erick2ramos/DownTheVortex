@@ -12,13 +12,22 @@ namespace Gameplay.UI
     {
         [SerializeField]
         Toggle _muteSFXToggle;
+        [SerializeField]
+        InputField _inputField;
         bool _isMuted;
 
         public override void Init()
         {
             _isMuted = DataPersistanceManager.PlayerData.SoundPreferences.IsMuted;
             _muteSFXToggle.isOn = !_isMuted;
+            _inputField.text = GameManager.Instance.MovementMultiplier.ToString();
             base.Init();
+        }
+
+        private void OnValueChanged (string input)
+        {
+            float newValue = (float)System.Convert.ToDouble(input);
+            GameManager.Instance.MovementMultiplier = newValue;
         }
 
         public void ToggleSound(bool toggle)
@@ -31,6 +40,7 @@ namespace Gameplay.UI
 
         public void Close()
         {
+            OnValueChanged(_inputField.text);
             ManagerHandler.Get<DataPersistanceManager>().Save();
             // Back to last screen
             GameManager.Instance.UIManager.ShowScreen("MainMenu");

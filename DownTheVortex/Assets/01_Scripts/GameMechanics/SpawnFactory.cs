@@ -21,6 +21,7 @@ namespace Gameplay
         int _currentPool = 0;
         int _activeCount = 0;
         int _maxActivePerPool = 0;
+        Color _currentColor;
 
         public SpawnFactory(GameConfig config, Transform obstaclesParent)
         {
@@ -34,6 +35,7 @@ namespace Gameplay
             // 80% of a pool can be used before switching to another pool
             // just in case the next pool is the same pool
             _maxActivePerPool = (int)(_config.MaxPoolSize * 0.8f);
+            _currentColor = config.ValidColors[Random.Range(0, config.ValidColors.Count)];
         }
 
         public void FillPool()
@@ -74,10 +76,12 @@ namespace Gameplay
         {
             ObstaclePoolID fullStep = _typedPool[_currentPool].Dequeue();
             _activeCount++;
+            fullStep.Step.SetColor(_currentColor);
             if (_activeCount >= _maxActivePerPool)
             {
                 _activeCount = 0;
                 _currentPool = Random.Range(0, _typedPool.Count);
+                _currentColor = _config.ValidColors[Random.Range(0, _config.ValidColors.Count)];
             }
             fullStep.Step.Activate();
             _pool.Enqueue(fullStep);
