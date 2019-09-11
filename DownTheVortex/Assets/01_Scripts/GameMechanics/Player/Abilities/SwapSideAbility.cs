@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Gameplay.Ability
 {
-    public class JumpAbility : CharacterAbility
+    public class SwapSideAbility : CharacterAbility
     {
         enum AbilityInternalState
         {
@@ -13,15 +13,14 @@ namespace Gameplay.Ability
             Count
         }
 
-        public float JumpForce;
-        public float Gravity;
+        public float ChangeSpeed;
 
         delegate void StateMachineDelegate();
         StateMachineDelegate[] _stateMachine;
         AbilityInternalState _currentState;
 
         Vector3 _vectorUpDelta;
-        Vector3 _jumpPoint;
+        Vector3 _targetPosition;
         Vector3 _vectorUp;
         Vector3 _currentForce;
         float _maxDistance;
@@ -31,8 +30,8 @@ namespace Gameplay.Ability
         {
             base.Initialize(character);
             _stateMachine = new StateMachineDelegate[(int)AbilityInternalState.Count];
-            _stateMachine[(int)AbilityInternalState.Starting] = GroundedState;
-            _stateMachine[(int)AbilityInternalState.Processing] = AiredState;
+            _stateMachine[(int)AbilityInternalState.Starting] = StartingState;
+            _stateMachine[(int)AbilityInternalState.Processing] = ProcessingState;
             _stateMachine[(int)AbilityInternalState.Deactivate] = DeactivateState;
 
             _currentState = AbilityInternalState.Starting;
@@ -44,24 +43,26 @@ namespace Gameplay.Ability
             _stateMachine[(int)_currentState]();
         }
 
-        private void GroundedState()
+        private void StartingState()
         {
-            _jumpPoint = _body.position;
             _vectorUpDelta = _character.Pivot.position - _body.position;
+            _targetPosition = _body.position + (2 * _vectorUpDelta);
             _maxDistance = _vectorUpDelta.magnitude;
             _vectorUp = _vectorUpDelta.normalized;
-            _currentForce = _vectorUp * JumpForce;
+            _currentForce = _vectorUp * ChangeSpeed;
             _currentState = AbilityInternalState.Processing;
         }
 
-        private void AiredState()
+        private void ProcessingState()
         {
             _body.position += _currentForce * Time.deltaTime;
-            _currentForce += (-_vectorUp * Gravity);
+            //_currentForce += ()
 
             if (Vector3.Distance(_body.position, _character.Pivot.position) >= _maxDistance)
             {
-                _body.position = _jumpPoint;
+                _character.CurrentAngle += 180;
+                _character.Pivot.localRotation = Quaternion.Euler(0, 0, _character.CurrentAngle);
+                _body.position = _targetPosition;
                 _currentState = AbilityInternalState.Deactivate;
             }
         }

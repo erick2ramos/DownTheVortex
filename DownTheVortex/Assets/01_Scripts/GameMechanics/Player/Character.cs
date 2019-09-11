@@ -37,20 +37,20 @@ namespace Gameplay
         float _tapTime, _tapMaxTime = 0.15f;
         #endregion
 
+        #region Character circular movement
+        [System.NonSerialized]
+        public float CurrentAngle = -90;
         Vector3 OverallVelocity;
-        float _currentAngle = -90;
-        float _radius = 8.5f;
-        float _depth;
-        float _speed;
-        float _angularSpeed = 1;
+        float _radius = 8.5f, _depth, _speed, _angularSpeed = 1;
         bool _showScoreNotification;
+        #endregion
 
         public void Init(float radius, float depth)
         {
             _speed = GameManager.Instance.GameConfig.OverallSpeed;
             _angularSpeed = Mathf.PI * _speed * Mathf.Rad2Deg * Time.deltaTime;
             _radius = radius;
-            _currentAngle = transform.localRotation.eulerAngles.z;
+            CurrentAngle = transform.localRotation.eulerAngles.z;
             Model.position = new Vector3(0, -radius, depth);
             OverallVelocity = new Vector3(0, 0, -1) * _speed;
             GameManager.Instance.OnScoreUpdated -= OnScoreUpdate;
@@ -61,7 +61,7 @@ namespace Gameplay
                 ability.enabled = false;
                 ability.Initialize(this);
             }
-            _activeAbility = _characterAbilities[0];
+            _activeAbility = _characterAbilities[Random.Range(0, _characterAbilities.Length)];
             _activeAbility.IsPermitted = true;
         }
 
@@ -97,6 +97,8 @@ namespace Gameplay
 
         private void FixedUpdate()
         {
+            PlayFeedback.transform.position = Model.transform.position;
+
             if (_showScoreNotification)
             {
                 NotificationLabel.transform.Translate(OverallVelocity * Time.deltaTime);
@@ -137,12 +139,11 @@ namespace Gameplay
 
         protected override void OnTouchStay(TouchInputEvent input)
         {
-            if (GameManager.Instance.CurrentState != GameState.Playing)
+            if (GameManager.Instance.CurrentState != GameState.Playing || _activeAbility.enabled)
                 return;
 
-            _currentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier * GameManager.Instance.MovementMultiplier;
-            Pivot.localRotation = Quaternion.Euler(0, 0, _currentAngle);
-            PlayFeedback.transform.position = Model.transform.position;
+            CurrentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier * GameManager.Instance.MovementMultiplier;
+            Pivot.localRotation = Quaternion.Euler(0, 0, CurrentAngle);
         }
 
         protected override void OnTouchRelease(TouchInputEvent input)
@@ -151,10 +152,6 @@ namespace Gameplay
                 return;
 
             _activeAbility.enabled = (Time.time - _tapTime < _tapMaxTime);
-            if (_activeAbility.enabled)
-            {
-                GameLog.LogWarning("Taped");
-            }
         }
 
         private void OnScoreUpdate(int newScore)
