@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class PlayerController : InputListener
+    public class Character : InputListener
     {
         public Transform Model;
         public Transform Pivot;

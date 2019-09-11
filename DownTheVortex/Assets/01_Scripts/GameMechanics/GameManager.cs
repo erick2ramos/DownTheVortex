@@ -29,7 +29,7 @@ namespace Gameplay {
         public float VortexRadius = 8;
         public List<ObstacleStep> ObstaclesPatterns;
         public List<ObstacleStep> CollectablesPatterns;
-        public PlayerController PlayerPrefab;
+        public Character PlayerPrefab;
         public Vector3 PlayerStartingPosition;
         public List<Color> ValidColors;
     }
@@ -49,7 +49,7 @@ namespace Gameplay {
         public MeshRenderer EnvironmentRenderer;
         public GameUIManager UIManager;
         public GameState CurrentState { get; private set; }
-        public PlayerController CurrentPlayer { get; private set; }
+        public Character CurrentPlayer { get; private set; }
         public int CurrentCollectable { get; private set; }
         public int PreviousHighScore { get; private set; }
 
