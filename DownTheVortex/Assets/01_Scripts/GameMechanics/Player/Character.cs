@@ -146,10 +146,10 @@ namespace Gameplay
 
         protected override void OnTouchStay(TouchInputEvent input)
         {
-            if (GameManager.Instance.CurrentState != GameState.Playing || _activeAbility.enabled)
+            if (GameManager.Instance.CurrentState != GameState.Playing || (_activeAbility != null && _activeAbility.enabled))
                 return;
 
-            CurrentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier * GameManager.Instance.MovementMultiplier;
+            CurrentAngle += Mathf.Clamp(input.touchDelta.x, -45, 45) * MovementModifier;
             Pivot.localRotation = Quaternion.Euler(0, 0, CurrentAngle);
         }
 
@@ -158,7 +158,8 @@ namespace Gameplay
             if (GameManager.Instance.CurrentState != GameState.Playing)
                 return;
 
-            _activeAbility.enabled = (Time.time - _tapTime < _tapMaxTime);
+            if(_activeAbility != null)
+                _activeAbility.enabled = (Time.time - _tapTime < _tapMaxTime);
         }
 
         private void OnScoreUpdate(int newScore)
