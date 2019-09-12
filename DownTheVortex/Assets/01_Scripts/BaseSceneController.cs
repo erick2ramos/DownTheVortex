@@ -1,5 +1,6 @@
 ﻿using BaseSystems.DataPersistance;
 using BaseSystems.Managers;
+using Store;
 using System.Collections;
 using UnityEngine;
 
@@ -18,6 +19,12 @@ namespace BaseSystems.SceneHandling
 
             yield return null;
 
+        }
+
+        public void OpenStore()
+        {
+            StoreSceneModel model = new StoreSceneModel();
+            ManagerHandler.Get<SceneTransitionManager>().LoadScene(SceneIndex.StoreScene, model);
         }
     }
 }

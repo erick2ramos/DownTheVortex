@@ -9,6 +9,8 @@ namespace BaseSystems.DataPersistance
     {
         public int CurrentHighScore;
         public int CurrentCurrency;
+        public int ActiveAbility;
+        public bool CanVibrate = true;
         public SoundPreferences SoundPreferences;
 
         public PlayerData()

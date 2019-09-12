@@ -1,4 +1,5 @@
 ﻿using BaseSystems.Audio;
+using BaseSystems.DataPersistance;
 using BaseSystems.Feedback;
 using BaseSystems.Input;
 using BaseSystems.Managers;
@@ -55,14 +56,21 @@ namespace Gameplay
             OverallVelocity = new Vector3(0, 0, -1) * _speed;
             GameManager.Instance.OnScoreUpdated -= OnScoreUpdate;
             GameManager.Instance.OnScoreUpdated += OnScoreUpdate;
+
+            // Get all abilities, initialize and activate only the one that was
+            // purchased at the store
             _characterAbilities = GetComponents<CharacterAbility>();
             foreach(var ability in _characterAbilities)
             {
                 ability.enabled = false;
-                ability.Initialize(this);
+                ability.IsPermitted = false;
+                if(ability.AbilityID == DataPersistanceManager.PlayerData.ActiveAbility)
+                {
+                    _activeAbility = ability;
+                    _activeAbility.IsPermitted = true;
+                    _activeAbility.Initialize(this);
+                }
             }
-            _activeAbility = _characterAbilities[Random.Range(0, _characterAbilities.Length)];
-            _activeAbility.IsPermitted = true;
         }
 
         public void Activate()
@@ -101,7 +109,7 @@ namespace Gameplay
 
             if (_showScoreNotification)
             {
-                NotificationLabel.transform.Translate(OverallVelocity * Time.deltaTime);
+                NotificationLabel.transform.Translate(OverallVelocity * Time.deltaTime * 0.5f);
                 // Stop notification when out of screen
                 if (NotificationLabel.transform.position.z < -10)
                 {
@@ -120,8 +128,7 @@ namespace Gameplay
 
         public IEnumerator Kill()
         {
-            Handheld.Vibrate();
-            ManagerHandler.Get<AudioManager>().PlaySFX(AudioID.Death0);
+            ManagerHandler.Get<VibrationManager>().Vibrate();
             Model.gameObject.SetActive(false);
             PlayFeedback.gameObject.SetActive(false);
             DeathFeedback.transform.position = Model.transform.position;
@@ -176,11 +183,11 @@ namespace Gameplay
                 // Player collected
                 CollectableStep collectable = other.GetComponentInParent<CollectableStep>();
                 collectable.OnCollect();
-                Handheld.Vibrate();
+                ManagerHandler.Get<VibrationManager>().Vibrate();
                 GameManager.Instance.AddCollectable();
             } else if ((ScoreLayer.value & (1 << other.gameObject.layer)) > 0)
             {
-                Handheld.Vibrate();
+                ManagerHandler.Get<VibrationManager>().Vibrate();
                 GameManager.Instance.AddScore();
             }
         }

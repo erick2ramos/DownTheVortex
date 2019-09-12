@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b974265bdee34684293b602329354dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilityID: 2
   IsPermitted: 1
   ChangeSpeed: 60
 --- !u!114 &1870262340226675779
@@ -154,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee5bf3b8dd0f974fba033a5ab4287f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilityID: 1
   IsPermitted: 1
   JumpForce: 60
   Gravity: 6

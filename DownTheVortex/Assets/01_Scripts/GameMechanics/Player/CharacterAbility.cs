@@ -5,6 +5,7 @@ namespace Gameplay.Ability
 {
     public abstract class CharacterAbility : MonoBehaviour
     {
+        public int AbilityID;
         public bool IsPermitted;
         protected Character _character;
 
