@@ -9,8 +9,13 @@ namespace Gameplay.UI
     {
         [SerializeField]
         Text _scoreAmount, _collectablesAmount;
+        [SerializeField]
+        Image _activeAbilityIcon;
         public override IEnumerator Activate()
         {
+            int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
+            if(activeAbility != 0)
+                _activeAbilityIcon.sprite = GameManager.Instance.GameConfig.AbilitiesConfig.GetByID(activeAbility).AbilityHelperImage;
             _collectablesAmount.text = DataPersistanceManager.PlayerData.CurrentCurrency.ToString();
             _scoreAmount.text = GameManager.Instance.CurrentScore.ToString();
 
