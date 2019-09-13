@@ -6,6 +6,7 @@ using Gameplay.Obstacles;
 using Gameplay.UI;
 using BaseSystems.Managers;
 using BaseSystems.DataPersistance;
+using Gameplay.Ability;
 
 namespace Gameplay {
     public enum GameState
@@ -17,23 +18,6 @@ namespace Gameplay {
         Gameover
     }
 
-    [System.Serializable]
-    public class GameConfig
-    {
-        public int MinPoolSize = 10;
-        public int MaxPoolSize = 20;
-        public int ScorePerStep = 1;
-        public int CollectableValue = 1;
-        public float StepSpawnTime = 1;
-        public float OverallSpeed = 1;
-        public float VortexRadius = 8;
-        public List<ObstacleStep> ObstaclesPatterns;
-        public List<ObstacleStep> CollectablesPatterns;
-        public Character PlayerPrefab;
-        public Vector3 PlayerStartingPosition;
-        public List<Color> ValidColors;
-    }
-
     public class GameManager : Singleton<GameManager>
     {
         public event System.Action OnGameOver;
@@ -43,7 +27,6 @@ namespace Gameplay {
 
         public GameConfig GameConfig;
         public int CurrentScore { get; set; }
-        public float MovementMultiplier = 1;
         public Transform ObstaclesHolder;
         public Transform WorldHolder;
         public MeshRenderer EnvironmentRenderer;

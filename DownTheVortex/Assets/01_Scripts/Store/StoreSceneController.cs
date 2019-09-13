@@ -4,6 +4,7 @@ using BaseSystems.SceneHandling;
 using BaseSystems.DataPersistance;
 using BaseSystems.Managers;
 using UnityEngine.UI;
+using Gameplay.Ability;
 
 namespace Store
 {
@@ -14,10 +15,10 @@ namespace Store
 
     public class StoreSceneController : SceneController<StoreSceneModel>
     {
-        public static event System.Action<StoreAbility> OnAbilityPurchased;
+        public static event System.Action<AbilityConfig> OnAbilityPurchased;
 
         [SerializeField]
-        StoreAbility[] _storeAbilities;
+        public AbilitiesConfig _allAbilities;
         [SerializeField]
         StoreAbilityVisual _storeItemPrefab;
         [SerializeField]
@@ -30,7 +31,7 @@ namespace Store
             int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
             // Initialize the store
             // show the buyable abilities
-            foreach (var storeAbility in _storeAbilities)
+            foreach (var storeAbility in _allAbilities.Abilities)
             {
                 StoreAbilityVisual visual = Instantiate(_storeItemPrefab, _itemsHolder, false);
                 visual.Initialize(this, storeAbility, storeAbility.AbilityID == activeAbility);
@@ -39,7 +40,7 @@ namespace Store
             yield return null;
         }
 
-        public void Purchase(StoreAbilityVisual storeItem, StoreAbility config)
+        public void Purchase(StoreAbilityVisual storeItem, AbilityConfig config)
         {
             if (DataPersistanceManager.PlayerData.CurrentCurrency >= config.Price)
             {

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Store
+namespace Gameplay.Ability
 {
     /// <summary>
     /// An ability representation to be used in the store and
     /// purchased by the player 
     /// </summary>
     [System.Serializable]
-    public class StoreAbility
+    public class AbilityConfig
     {
         public int AbilityID;
         public string Name;

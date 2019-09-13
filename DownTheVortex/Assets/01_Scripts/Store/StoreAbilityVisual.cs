@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using BaseSystems.DataPersistance;
+using Gameplay.Ability;
 
 namespace Store
 {
@@ -20,10 +21,10 @@ namespace Store
         Button _purchaseButton;
 
         StoreSceneController _handler;
-        StoreAbility _config;
+        AbilityConfig _config;
         bool _isEquiped;
 
-        public void Initialize(StoreSceneController handler, StoreAbility config, bool IsEquiped)
+        public void Initialize(StoreSceneController handler, AbilityConfig config, bool IsEquiped)
         {
             _handler = handler;
             _config = config;
@@ -34,11 +35,11 @@ namespace Store
             _nameLabel.text = config.Name;
             //_descriptionLabel.text = config.Description;
             _priceLabel.text = config.Price.ToString("n0");
-            //_abilityImage.sprite
+            _abilityImage.sprite = config.AbilityHelperImage;
             Refresh(IsEquiped ? config : null);
         }
 
-        public void Refresh(StoreAbility equipedAbility)
+        public void Refresh(AbilityConfig equipedAbility)
         {
             _isEquiped = equipedAbility != null && (_isEquiped = equipedAbility.AbilityID == _config.AbilityID);
             // if the equiped ability is this, show equiped ui elements
