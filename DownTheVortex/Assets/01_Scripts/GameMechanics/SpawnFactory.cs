@@ -34,7 +34,7 @@ namespace Gameplay
             _currentPool = Random.Range(0, _typedPool.Count);
             // 80% of a pool can be used before switching to another pool
             // just in case the next pool is the same pool
-            _maxActivePerPool = (int)(_config.MaxPoolSize * 0.8f);
+            _maxActivePerPool = Random.Range(3,7);
             _currentColor = config.ValidColors[Random.Range(0, config.ValidColors.Count)];
         }
 
@@ -82,6 +82,7 @@ namespace Gameplay
                 _activeCount = 0;
                 _currentPool = Random.Range(0, _typedPool.Count);
                 _currentColor = _config.ValidColors[Random.Range(0, _config.ValidColors.Count)];
+                _maxActivePerPool = Random.Range(3, 7);
             }
             fullStep.Step.Activate();
             _pool.Enqueue(fullStep);

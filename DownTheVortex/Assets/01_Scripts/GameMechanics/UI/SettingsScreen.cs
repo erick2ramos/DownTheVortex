@@ -15,6 +15,8 @@ namespace Gameplay.UI
         [SerializeField]
         Toggle _vibrateToggle;
         bool _isMuted;
+        int _cheatCounter;
+        float _cheatTimer;
 
         public override void Init()
         {
@@ -42,6 +44,30 @@ namespace Gameplay.UI
             ManagerHandler.Get<DataPersistanceManager>().Save();
             // Back to last screen
             GameManager.Instance.UIManager.ShowScreen("MainMenu");
+        }
+
+        private void Update()
+        {
+            if (_cheatCounter > 0)
+            {
+                _cheatTimer += Time.deltaTime;
+                if (_cheatTimer > 0.5f)
+                {
+                    _cheatCounter = 0;
+                    _cheatTimer = 0;
+                }
+            }
+        }
+
+        public void Cheat()
+        {
+            _cheatCounter++;
+            _cheatTimer = 0;
+            if (_cheatCounter >= 5)
+            {
+                _cheatCounter = 0;
+                DataPersistanceManager.PlayerData.CurrentCurrency += 100;
+            }
         }
     }
 }

@@ -16,8 +16,8 @@ MonoBehaviour:
   MaxPoolSize: 15
   ScorePerStep: 1
   CollectableValue: 1
-  StepSpawnTime: 1
-  OverallSpeed: 100
+  StepSpawnTime: 0.7
+  OverallSpeed: 130
   VortexRadius: 7.5
   ObstaclesPatterns:
   - {fileID: 7476780678170309405, guid: 33eac1a412c44c2499947261303ec120, type: 3}
@@ -29,7 +29,7 @@ MonoBehaviour:
   - {fileID: 3794957460408100858, guid: d6635b3f77259d344b4e7b37cde93225, type: 3}
   PlayerPrefab: {fileID: 1047415325876207294, guid: 073eff5f375a2f04588a949d1dd66e0b,
     type: 3}
-  PlayerStartingPosition: {x: 0, y: 0, z: 0}
+  PlayerStartingPosition: {x: 0, y: 0, z: 6}
   ValidColors:
   - {r: 0.9150943, g: 0.13381095, b: 0.13381095, a: 1}
   - {r: 0.9137255, g: 0.87294203, b: 0.13333331, a: 1}
