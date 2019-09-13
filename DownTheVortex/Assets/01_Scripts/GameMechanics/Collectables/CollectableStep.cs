@@ -18,6 +18,7 @@ namespace Gameplay
         public override void Init()
         {
             base.Init();
+            _model.gameObject.SetActive(true);
             _collectFeedback.Initialize(gameObject);
         }
 
@@ -29,7 +30,7 @@ namespace Gameplay
 
         protected override void FixedUpdate()
         {
-            _model.transform.rotation *= Quaternion.Euler(0, 0, _rotationDegree * Time.deltaTime);
+            _model.transform.rotation *= Quaternion.Euler(0, _rotationDegree * Time.deltaTime, 0);
 
             if (!_active)
                 return;
