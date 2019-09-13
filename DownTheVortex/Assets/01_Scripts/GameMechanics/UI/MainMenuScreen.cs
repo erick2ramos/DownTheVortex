@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using BaseSystems.DataPersistance;
 
 namespace Gameplay.UI
 {
@@ -9,6 +10,10 @@ namespace Gameplay.UI
     {
         [SerializeField]
         Button _settingsButton;
+
+        [SerializeField]
+        Animator _ftueAnimator;
+
         bool _alreadyStarted;
         private bool _blocked;
 
@@ -23,7 +28,10 @@ namespace Gameplay.UI
             _alreadyStarted = false;
             _blocked = true;
             yield return base.Activate();
+
             _blocked = false;
+            int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
+            _ftueAnimator.SetInteger("Ability", activeAbility);
         }
 
         public override IEnumerator Deactivate()

@@ -11,6 +11,7 @@ namespace Gameplay.UI
         Text _scoreAmount, _collectablesAmount;
         [SerializeField]
         Image _activeAbilityIcon;
+
         public override IEnumerator Activate()
         {
             int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
