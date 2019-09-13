@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace Gameplay.Obstacles
 {
+    /// <summary>
+    /// Rotates the obstacle in a random direction indefinetly
+    /// </summary>
     public class RotationLoop : ObstacleBehaviour
     {
         public float RotationAnglePerSecond;

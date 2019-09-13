@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace Gameplay.Obstacles
 {
+    /// <summary>
+    /// Base class for all behaviours an obstacle can have
+    /// </summary>
     [RequireComponent(typeof(ObstacleStep))]
     public class ObstacleBehaviour : MonoBehaviour
     {

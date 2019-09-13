@@ -14,6 +14,7 @@ namespace Gameplay.UI
 
         public override IEnumerator Activate()
         {
+            // Show ability icon if an ability has been equiped
             int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
             if(activeAbility != 0)
                 _activeAbilityIcon.sprite = GameManager.Instance.GameConfig.AbilitiesConfig.GetByID(activeAbility).AbilityHelperImage;

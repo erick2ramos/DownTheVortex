@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace Gameplay.Obstacles
 {
+    /// <summary>
+    /// Rotates the obstacle to a random angle
+    /// </summary>
     public class RotationAdjust : ObstacleBehaviour
     {
         public Quaternion TargetAngle;

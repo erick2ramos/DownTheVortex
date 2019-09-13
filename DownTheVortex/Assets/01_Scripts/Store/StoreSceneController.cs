@@ -44,6 +44,8 @@ namespace Store
         {
             if (DataPersistanceManager.PlayerData.CurrentCurrency >= config.Price)
             {
+                // Store in persistance the ability equiped after discounting the 
+                // ability price from the player currency
                 DataPersistanceManager.PlayerData.CurrentCurrency -= config.Price;
                 DataPersistanceManager.PlayerData.ActiveAbility = config.AbilityID;
                 ManagerHandler.Get<DataPersistanceManager>().Save();

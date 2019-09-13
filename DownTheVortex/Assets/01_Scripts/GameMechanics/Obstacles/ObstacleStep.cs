@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Gameplay.Obstacles {
+    /// <summary>
+    /// Handles the logic of an obstacle which behaviour should be using and how it moves
+    /// towards the camera
+    /// </summary>
     public class ObstacleStep : MonoBehaviour
     {
         public event System.Action<ObstacleStep> OnDestroyEvent;
@@ -60,6 +64,7 @@ namespace Gameplay.Obstacles {
         {
             if (!_active)
                 return;
+            // Moves the obstacle towards the camera
             transform.Translate(_direction * _speed * Time.deltaTime);
 
             foreach (var behaviour in _behaviours)
@@ -68,6 +73,7 @@ namespace Gameplay.Obstacles {
                     behaviour.HandleStep();
             }
 
+            // If the obstacle pass a fixed plane it should be deactivated
             if(transform.position.z < -10)
             {
                 Deactivate();

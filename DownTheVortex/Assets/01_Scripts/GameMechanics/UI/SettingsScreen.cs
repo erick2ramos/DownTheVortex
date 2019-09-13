@@ -59,6 +59,10 @@ namespace Gameplay.UI
             }
         }
 
+        /// <summary>
+        /// To use the cheat you have to tap 5 times on the top right of the screen when in the settings screen,
+        /// gives 100 currency/collectables
+        /// </summary>
         public void Cheat()
         {
             _cheatCounter++;

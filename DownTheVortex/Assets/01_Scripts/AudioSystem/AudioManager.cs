@@ -31,6 +31,7 @@ namespace BaseSystems.Audio
 
         public AudioSource MusicSource;
         public AudioSource SFXSource;
+        // All the audio clips mapped to an id enum list for quick reference when playing the sound
         [SerializeField]
         List<AudioTuple> _soundMap;
 

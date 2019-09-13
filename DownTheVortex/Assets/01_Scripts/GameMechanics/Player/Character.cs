@@ -18,6 +18,9 @@ namespace Gameplay
         Death
     }
 
+    /// <summary>
+    /// Handles all the input given by the player and the character logic and abilities
+    /// </summary>
     public class Character : InputListener
     {
         public CharacterState CurrentState { get; set; }
@@ -87,6 +90,7 @@ namespace Gameplay
             while (true)
             {
                 yield return null;
+                // Rotate model just for eyecandy
                 Model.localRotation *= Quaternion.Euler(_angularSpeed * Time.deltaTime, 0, 0);
             }
         }
@@ -146,6 +150,7 @@ namespace Gameplay
 
         protected override void OnTouchStay(TouchInputEvent input)
         {
+            // The player can't move if an ability is currently being used
             if (GameManager.Instance.CurrentState != GameState.Playing || (_activeAbility != null && _activeAbility.enabled))
                 return;
 
@@ -188,6 +193,7 @@ namespace Gameplay
                 GameManager.Instance.AddCollectable();
             } else if ((ScoreLayer.value & (1 << other.gameObject.layer)) > 0)
             {
+                // Player passed successfuly an obstacle
                 ManagerHandler.Get<VibrationManager>().Vibrate();
                 GameManager.Instance.AddScore();
             }

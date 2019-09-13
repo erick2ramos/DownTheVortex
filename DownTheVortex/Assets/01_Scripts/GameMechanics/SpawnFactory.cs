@@ -5,6 +5,9 @@ using Gameplay.Obstacles;
 
 namespace Gameplay
 {
+    /// <summary>
+    /// Manages the logic and upkeep for obstacles and collectables spawning and activating
+    /// </summary>
     public class SpawnFactory
     {
         class ObstaclePoolID
@@ -23,6 +26,11 @@ namespace Gameplay
         int _maxActivePerPool = 0;
         Color _currentColor;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="obstaclesParent"></param>
         public SpawnFactory(GameConfig config, Transform obstaclesParent)
         {
             _config = config;
@@ -38,6 +46,11 @@ namespace Gameplay
             _currentColor = config.ValidColors[Random.Range(0, config.ValidColors.Count)];
         }
 
+        
+        /// <summary>
+        /// Instanciate a configurable amount of obstacles per obstacle type
+        /// to be reused, also intantiate several collectables that are reused too
+        /// </summary>
         public void FillPool()
         {
             int poolIndex = 0;
@@ -46,9 +59,11 @@ namespace Gameplay
                 _typedPool.Add(new Queue<ObstaclePoolID>());
                 while (_typedPool[poolIndex].Count < _config.MaxPoolSize)
                 {
+                    // Obstacles per type
                     ObstacleStep step = GameObject.Instantiate(_config.ObstaclesPatterns[poolIndex], _obstaclesParent, false);
                     step.gameObject.SetActive(false);
                     step.Init();
+                    // Adding callback for when the obstacles disappear
                     step.OnDestroyEvent += ResetObstacle;
                     _typedPool[poolIndex].Enqueue(new ObstaclePoolID()
                     {
@@ -67,11 +82,17 @@ namespace Gameplay
                 ObstacleStep step = GameObject.Instantiate(_config.CollectablesPatterns[patternIndex], _obstaclesParent, false);
                 step.gameObject.SetActive(false);
                 step.Init();
+                // Adding callback for when the collectable was not collected by the player
                 step.OnDestroyEvent += ResetCollectable;
                 _collectablePool.Enqueue(step);
             }
         }
 
+        /// <summary>
+        /// Returns and activates the next obstacle queued, after a random amount of
+        /// obstacles has been activated change to another queue to activate
+        /// </summary>
+        /// <returns></returns>
         public ObstacleStep Next()
         {
             ObstaclePoolID fullStep = _typedPool[_currentPool].Dequeue();
@@ -89,6 +110,10 @@ namespace Gameplay
             return fullStep.Step;
         }
 
+        /// <summary>
+        /// Returns and activates a reusable collectable
+        /// </summary>
+        /// <returns></returns>
         public CollectableStep NextCollectable()
         {
             ObstacleStep step = _collectablePool.Dequeue();
@@ -96,6 +121,10 @@ namespace Gameplay
             return (CollectableStep)step;
         }
 
+        /// <summary>
+        /// Prepare an obstacle to be activated
+        /// </summary>
+        /// <param name="obstacle"></param>
         private void ResetObstacle(ObstacleStep obstacle)
         {
             // step should be the same as the obstacle param
@@ -106,6 +135,10 @@ namespace Gameplay
             _typedPool[FullStep.PoolId].Enqueue(FullStep);
         }
 
+        /// <summary>
+        /// Prepare a collectable to be activated
+        /// </summary>
+        /// <param name="collectable"></param>
         private void ResetCollectable(ObstacleStep collectable)
         {
             collectable.transform.localPosition = Vector3.zero;

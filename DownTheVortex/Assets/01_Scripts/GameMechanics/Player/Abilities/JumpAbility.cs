@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace Gameplay.Ability
 {
+    /// <summary>
+    /// Allows the character to jump towards the center of the vortex
+    /// </summary>
     public class JumpAbility : CharacterAbility
     {
         enum AbilityInternalState
@@ -30,6 +33,7 @@ namespace Gameplay.Ability
         public override void Initialize(Character character)
         {
             base.Initialize(character);
+            // Setup of the simple static state machine
             _stateMachine = new StateMachineDelegate[(int)AbilityInternalState.Count];
             _stateMachine[(int)AbilityInternalState.Starting] = GroundedState;
             _stateMachine[(int)AbilityInternalState.Processing] = AiredState;

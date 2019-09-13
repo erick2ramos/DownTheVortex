@@ -18,6 +18,9 @@ namespace Gameplay {
         Gameover
     }
 
+    /// <summary>
+    /// Handles the game flow
+    /// </summary>
     public class GameManager : Singleton<GameManager>
     {
         public event System.Action OnGameOver;
@@ -63,6 +66,7 @@ namespace Gameplay {
             switch (CurrentState)
             {
                 case GameState.Playing:
+                    // Controls when an obstacle or a collectable has to be spawned
                     _timer += Time.deltaTime;
                     _collectableTimer += Time.deltaTime;
                     float collectableSpawnTime = GameConfig.StepSpawnTime * 0.5f;
@@ -72,12 +76,14 @@ namespace Gameplay {
                         _collectableTimer = 0;
                         if (Random.value > 0.8f)
                         {
+                            // Activate a collectable
                             _factory.NextCollectable();
                         }
                     }
 
                     if (_timer > GameConfig.StepSpawnTime)
                     {
+                        // Activate an obstacle
                         _factory.Next();
                         _timer = 0;
                     }
@@ -85,6 +91,9 @@ namespace Gameplay {
             }
         }
 
+        /// <summary>
+        /// Sets the game into play mode
+        /// </summary>
         public void Play()
         {
             if(CurrentState == GameState.Ready)
@@ -96,6 +105,9 @@ namespace Gameplay {
             }
         }
 
+        /// <summary>
+        /// Called every time the player manages to pass an obstacle
+        /// </summary>
         public void AddScore()
         {
             CurrentScore += GameConfig.ScorePerStep;
@@ -104,6 +116,9 @@ namespace Gameplay {
             OnScoreUpdated?.Invoke(CurrentScore);
         }
 
+        /// <summary>
+        /// Called when the player collects a collectable
+        /// </summary>
         public void AddCollectable()
         {
             DataPersistanceManager.PlayerData.CurrentCurrency += GameConfig.CollectableValue;
@@ -111,6 +126,9 @@ namespace Gameplay {
             OnCollectableUpdated?.Invoke(CurrentCollectable);
         }
 
+        /// <summary>
+        /// Show the gameover screen
+        /// </summary>
         public void GameOver()
         {
             PreviousHighScore = DataPersistanceManager.PlayerData.CurrentHighScore;

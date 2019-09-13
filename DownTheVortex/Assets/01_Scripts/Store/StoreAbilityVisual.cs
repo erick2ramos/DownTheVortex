@@ -6,6 +6,10 @@ using Gameplay.Ability;
 
 namespace Store
 {
+    /// <summary>
+    /// Controller for the visual representation of an ability
+    /// in the ability store
+    /// </summary>
     public class StoreAbilityVisual : MonoBehaviour
     {
         [SerializeField]
