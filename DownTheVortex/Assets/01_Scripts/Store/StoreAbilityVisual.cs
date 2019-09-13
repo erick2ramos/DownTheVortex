@@ -29,6 +29,7 @@ namespace Store
             _handler = handler;
             _config = config;
 
+            StoreSceneController.OnAbilityPurchased -= Refresh;
             StoreSceneController.OnAbilityPurchased += Refresh;
 
             // Setup UI elements
@@ -53,6 +54,11 @@ namespace Store
         {
             // Notify handler that this ability is requested to be purchased
             _handler.Purchase(this, _config);
+        }
+
+        private void OnDestroy()
+        {
+            StoreSceneController.OnAbilityPurchased -= Refresh;
         }
     }
 }

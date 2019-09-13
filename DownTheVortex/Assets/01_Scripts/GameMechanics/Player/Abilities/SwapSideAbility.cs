@@ -25,6 +25,7 @@ namespace Gameplay.Ability
         Vector3 _currentForce;
         float _maxDistance;
         Transform _body;
+        private Vector3 pivot;
 
         public override void Initialize(Character character)
         {
@@ -45,7 +46,9 @@ namespace Gameplay.Ability
 
         private void StartingState()
         {
-            _vectorUpDelta = _character.Pivot.position - _body.position;
+            pivot = _character.Pivot.position;
+            pivot.z = _body.position.z;
+            _vectorUpDelta = pivot - _body.position;
             _targetPosition = _body.position + (2 * _vectorUpDelta);
             _maxDistance = _vectorUpDelta.magnitude;
             _vectorUp = _vectorUpDelta.normalized;
@@ -56,9 +59,8 @@ namespace Gameplay.Ability
         private void ProcessingState()
         {
             _body.position += _currentForce * Time.deltaTime;
-            //_currentForce += ()
 
-            if (Vector3.Distance(_body.position, _character.Pivot.position) >= _maxDistance)
+            if (Vector3.Distance(_body.position, pivot) >= _maxDistance)
             {
                 _character.CurrentAngle += 180;
                 _character.Pivot.localRotation = Quaternion.Euler(0, 0, _character.CurrentAngle);

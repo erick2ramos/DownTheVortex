@@ -17,6 +17,7 @@ namespace Gameplay.UI
             int activeAbility = DataPersistanceManager.PlayerData.ActiveAbility;
             if(activeAbility != 0)
                 _activeAbilityIcon.sprite = GameManager.Instance.GameConfig.AbilitiesConfig.GetByID(activeAbility).AbilityHelperImage;
+            _activeAbilityIcon.gameObject.SetActive(activeAbility != 0);
             _collectablesAmount.text = DataPersistanceManager.PlayerData.CurrentCurrency.ToString();
             _scoreAmount.text = GameManager.Instance.CurrentScore.ToString();
 
